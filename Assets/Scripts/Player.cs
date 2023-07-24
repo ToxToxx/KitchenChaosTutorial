@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
         
         if (Input.GetKey(KeyCode.W))
         {
+            Debug.Log("Pressed");
         }
         else if (Input.GetKey(KeyCode.S))
         {
