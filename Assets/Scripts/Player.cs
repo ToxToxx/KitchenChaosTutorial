@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private float _moveSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -19,17 +20,26 @@ public class Player : MonoBehaviour
         
         if (Input.GetKey(KeyCode.W))
         {
-            Debug.Log("Pressed");
+            inputVector.y = +1;
         }
         else if (Input.GetKey(KeyCode.S))
         {
+            inputVector.y = -1;
         }
         else if (Input.GetKey(KeyCode.A))
         {
+            inputVector.x = -1;
         }       
         else if (Input.GetKey(KeyCode.D))
         {
+            inputVector.x = +1;
         }
+
+        inputVector = inputVector.normalized;
+
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+        transform.position += moveDirection *  _moveSpeed * Time.deltaTime;
+        Debug.Log(Time.deltaTime);
 
     }
 }
