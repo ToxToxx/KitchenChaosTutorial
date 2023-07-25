@@ -22,7 +22,39 @@ public class Player : MonoBehaviour
         Vector2 inputVector =  _gameInput.GetMovementVectorNormalized();
 
         Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y); //movement
-        transform.position += moveDirection *  _moveSpeed * Time.deltaTime;
+
+        float moveDistance = _moveSpeed * Time.deltaTime;
+        float playerRadius = .7f;
+        float playerHeight = 2f;
+
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirection, moveDistance);
+
+        //solution of diagonal moving
+        if (!canMove)
+        {
+            Vector3 moveDirX = new Vector3(moveDirection.x, 0, 0).normalized;
+            canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
+
+            if (canMove)
+            {
+                moveDirection = moveDirX;
+            }
+            else
+            {
+                Vector3 moveDirZ = new Vector3(0, 0, moveDirection.z).normalized;
+                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
+                if (canMove)
+                {
+                    moveDirection = moveDirZ;
+                }
+            }
+        }
+
+        if (canMove)
+        {
+            transform.position += moveDirection * moveDistance;
+        }    
+
         _isWalking = moveDirection != Vector3.zero;
 
         float rotateSpeed = 10f;
