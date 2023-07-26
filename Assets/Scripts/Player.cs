@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 7f;
     private bool _isWalking = false;
+    private Vector3 _lastInteractDirection;
     [SerializeField] private GameInput _gameInput;
  
     // Start is called before the first frame update
@@ -35,7 +36,12 @@ public class Player : MonoBehaviour
 
         float interactDistance = 2f;
 
-       if  (Physics.Raycast(transform.position, moveDirection,out RaycastHit raycastHit, interactDistance))      
+        if (moveDirection !=  Vector3.zero)
+        {
+            _lastInteractDirection = moveDirection;
+        }
+
+       if  (Physics.Raycast(transform.position, _lastInteractDirection, out RaycastHit raycastHit, interactDistance))      
        {
             Debug.Log(raycastHit.transform);
        }
