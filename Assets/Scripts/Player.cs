@@ -17,7 +17,28 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _gameInput.OnInteractAction += _gameInput_OnInteractAction;
+    }
+
+    private void _gameInput_OnInteractAction(object sender, EventArgs e)//add listener
+    {
+        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        float interactDistance = 2f;
+
+        if (moveDirection != Vector3.zero)
+        {
+            _lastInteractDirection = moveDirection;
+        }
+
+        if (Physics.Raycast(transform.position, _lastInteractDirection, out RaycastHit raycastHit, interactDistance, _countersLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                clearCounter.Interact();
+            }
+        }
     }
 
     // Update is called once per frame
@@ -48,7 +69,7 @@ public class Player : MonoBehaviour
         {
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                clearCounter.Interact();
+                
             }
        }
     }
