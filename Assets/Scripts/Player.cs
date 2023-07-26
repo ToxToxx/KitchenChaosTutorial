@@ -19,7 +19,30 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Vector2 inputVector =  _gameInput.GetMovementVectorNormalized();
+        HandleMovement();
+        HandleOnInteractions();
+    }
+
+    public bool IsWalking()
+    {
+        return _isWalking;
+    }
+
+    private void HandleOnInteractions()
+    {
+        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        float interactDistance = 2f;
+
+       if  (Physics.Raycast(transform.position, moveDirection,out RaycastHit raycastHit, interactDistance))      
+       {
+            Debug.Log(raycastHit.transform);
+       }
+    }
+    private void HandleMovement()
+    {
+        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
 
         Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y); //movement
 
@@ -53,17 +76,12 @@ public class Player : MonoBehaviour
         if (canMove)
         {
             transform.position += moveDirection * moveDistance;
-        }    
+        }
 
         _isWalking = moveDirection != Vector3.zero;
 
         float rotateSpeed = 10f;
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed); //rotation and smoothing
 
-    }
-
-    public bool IsWalking()
-    {
-        return _isWalking;
     }
 }
