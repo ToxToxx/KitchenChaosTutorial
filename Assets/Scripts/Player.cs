@@ -7,9 +7,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 7f;
+    [SerializeField] private GameInput _gameInput;
+    [SerializeField] private LayerMask _countersLayerMask;
+
     private bool _isWalking = false;
     private Vector3 _lastInteractDirection;
-    [SerializeField] private GameInput _gameInput;
+    
  
     // Start is called before the first frame update
     void Start()
@@ -41,9 +44,12 @@ public class Player : MonoBehaviour
             _lastInteractDirection = moveDirection;
         }
 
-       if  (Physics.Raycast(transform.position, _lastInteractDirection, out RaycastHit raycastHit, interactDistance))      
-       {
-            Debug.Log(raycastHit.transform);
+        if (Physics.Raycast(transform.position, _lastInteractDirection, out RaycastHit raycastHit, interactDistance, _countersLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                clearCounter.Interact();
+            }
        }
     }
     private void HandleMovement()
