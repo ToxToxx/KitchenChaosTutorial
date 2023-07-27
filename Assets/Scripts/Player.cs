@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     //singleton pattern
     public static Player Instance { get; private set; }
 
-
+    //event on selected Counter
     public event EventHandler <OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged; //generic
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
