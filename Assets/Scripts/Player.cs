@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
 
     private bool _isWalking = false;
     private Vector3 _lastInteractDirection;
+    private ClearCounter _selectedCounter;
     
  
     // Start is called before the first frame update
@@ -22,23 +23,11 @@ public class Player : MonoBehaviour
 
     private void _gameInput_OnInteractAction(object sender, EventArgs e)//add listener
     {
-        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
-        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        float interactDistance = 2f;
-
-        if (moveDirection != Vector3.zero)
+        if (_selectedCounter != null )
         {
-            _lastInteractDirection = moveDirection;
+            _selectedCounter.Interact();
         }
-
-        if (Physics.Raycast(transform.position, _lastInteractDirection, out RaycastHit raycastHit, interactDistance, _countersLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                clearCounter.Interact();
-            }
-        }
+       
     }
 
     // Update is called once per frame
@@ -69,9 +58,20 @@ public class Player : MonoBehaviour
         {
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                
+                if(clearCounter != _selectedCounter)
+                {
+                    _selectedCounter = clearCounter;
+                }
             }
-       }
+            else
+            {
+                _selectedCounter = null;
+            }
+       } else
+        {
+            _selectedCounter = null;
+        }
+        Debug.Log(_selectedCounter);
     }
     private void HandleMovement()
     {
