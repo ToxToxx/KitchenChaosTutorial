@@ -6,31 +6,47 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    //singleton pattern
+    public static Player Instance { get; private set; }
+
+
+    public event EventHandler <OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged; //generic
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
+
     [SerializeField] private float _moveSpeed = 7f;
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _countersLayerMask;
 
     private bool _isWalking = false;
     private Vector3 _lastInteractDirection;
-    private ClearCounter _selectedCounter;
-    
- 
-    // Start is called before the first frame update
-    void Start()
+    private ClearCounter selectedCounter;
+
+
+    private void Awake()
+    {
+        
+    }
+
+
+    private void Start()
     {
         _gameInput.OnInteractAction += _gameInput_OnInteractAction;
     }
 
     private void _gameInput_OnInteractAction(object sender, EventArgs e)//add listener
     {
-        if (_selectedCounter != null )
+        if (selectedCounter != null )
         {
-            _selectedCounter.Interact();
+            selectedCounter.Interact();
         }
        
     }
 
-    // Update is called once per frame
+
     private void Update()
     {
         HandleMovement();
@@ -58,20 +74,20 @@ public class Player : MonoBehaviour
         {
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                if(clearCounter != _selectedCounter)
+                if(clearCounter != selectedCounter)
                 {
-                    _selectedCounter = clearCounter;
+                    SetSelectedCounter(clearCounter);
                 }
             }
             else
             {
-                _selectedCounter = null;
+                SetSelectedCounter(null);
             }
        } else
         {
-            _selectedCounter = null;
+            SetSelectedCounter(null);
         }
-        Debug.Log(_selectedCounter);
+      
     }
     private void HandleMovement()
     {
@@ -116,5 +132,15 @@ public class Player : MonoBehaviour
         float rotateSpeed = 10f;
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed); //rotation and smoothing
 
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }
