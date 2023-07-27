@@ -28,7 +28,11 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        
+        if(Instance != null) 
+        {
+            Debug.LogError("There more than one payer instance");
+        }
+        Instance = this;
     }
 
 
