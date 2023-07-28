@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClearCounter : MonoBehaviour
+public class ClearCounter : MonoBehaviour,IKitchenObjectParent
 {
 
     [SerializeField] private KitchenObjectSO KitchenObjectSO;
@@ -23,7 +23,7 @@ public class ClearCounter : MonoBehaviour
             }
         }
     }
-    public void Interact()
+    public void Interact(Player player)
     {
         if (_kitchenObject == null)
         {
@@ -32,6 +32,8 @@ public class ClearCounter : MonoBehaviour
         }
         else
         {
+            //Give the object to the player
+            //_kitchenObject.SetClearCounter(player);
             Debug.Log(_kitchenObject.GetClearCounter());
         }
     }
