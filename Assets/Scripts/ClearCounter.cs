@@ -7,22 +7,11 @@ public class ClearCounter : MonoBehaviour,IKitchenObjectParent
 
     [SerializeField] private KitchenObjectSO KitchenObjectSO;
     [SerializeField] private Transform _counterTopPoint;
-    [SerializeField] private ClearCounter _secondClearCounter;
-    [SerializeField] private bool testing;
+
 
     private KitchenObject _kitchenObject;
 
 
-    private void Update()
-    {
-        if(testing && Input.GetKeyDown(KeyCode.T))
-        {
-            if(_kitchenObject!= null) 
-            {
-                _kitchenObject.SetKitchenObjectParent(_secondClearCounter);
-            }
-        }
-    }
     public void Interact(Player player)
     {
         if (_kitchenObject == null)
@@ -33,8 +22,7 @@ public class ClearCounter : MonoBehaviour,IKitchenObjectParent
         else
         {
             //Give the object to the player
-            //_kitchenObject.SetClearCounter(player);
-            Debug.Log(_kitchenObject.GetKitchenObjectParent());
+            _kitchenObject.SetKitchenObjectParent(player);
         }
     }
 
