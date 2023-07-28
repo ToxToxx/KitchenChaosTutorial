@@ -8,12 +8,18 @@ public class ClearCounter : MonoBehaviour
     [SerializeField] private KitchenObjectSO KitchenObjectSO;
     [SerializeField] private Transform _counterTopPoint;
 
+    private KitchenObject _kitchenObject;
+
     public void Interact()
     {
-        Debug.Log("Interact");
-        Transform kitchenObjectTransform = Instantiate(KitchenObjectSO.prefab, _counterTopPoint);
-        kitchenObjectTransform.localPosition = Vector3.zero;
+        if (_kitchenObject == null)
+        {
+            Transform kitchenObjectTransform = Instantiate(KitchenObjectSO.prefab, _counterTopPoint);
+            kitchenObjectTransform.localPosition = Vector3.zero;
 
-       Debug.Log( kitchenObjectTransform.GetComponent<KitchenObject>().GetKitchenObjectSO().objectName);
+            _kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+        }
+
+
     }
 }
