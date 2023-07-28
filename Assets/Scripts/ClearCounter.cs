@@ -19,7 +19,7 @@ public class ClearCounter : MonoBehaviour,IKitchenObjectParent
         {
             if(_kitchenObject!= null) 
             {
-                _kitchenObject.SetClearCounter(_secondClearCounter);
+                _kitchenObject.SetKitchenObjectParent(_secondClearCounter);
             }
         }
     }
@@ -28,13 +28,13 @@ public class ClearCounter : MonoBehaviour,IKitchenObjectParent
         if (_kitchenObject == null)
         {
             Transform kitchenObjectTransform = Instantiate(KitchenObjectSO.prefab, _counterTopPoint);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetClearCounter(this);
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
         }
         else
         {
             //Give the object to the player
             //_kitchenObject.SetClearCounter(player);
-            Debug.Log(_kitchenObject.GetClearCounter());
+            Debug.Log(_kitchenObject.GetKitchenObjectParent());
         }
     }
 
