@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private bool _isWalking = false;
     private Vector3 _lastInteractDirection;
-    private BaseCounter selectedCounter;
+    private BaseCounter _selectedCounter;
     private KitchenObject _kitchenObject;
 
 
@@ -46,17 +46,17 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void _gameInput_OnInteractAlternateAction(object sender, EventArgs e)
     {
-        if (selectedCounter != null)
+        if (_selectedCounter != null)
         {
-            selectedCounter.InteractAlternate(this);
+            _selectedCounter.InteractAlternate(this);
         }
     }
 
     private void _gameInput_OnInteractAction(object sender, EventArgs e)//add listener
     {
-        if (selectedCounter != null )
+        if (_selectedCounter != null )
         {
-            selectedCounter.Interact(this);
+            _selectedCounter.Interact(this);
         }
        
     }
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if(baseCounter != selectedCounter)
+                if(baseCounter != _selectedCounter)
                 {
                     SetSelectedCounter(baseCounter);
                 }
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
-        this.selectedCounter = selectedCounter;
+        this._selectedCounter = selectedCounter;
 
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {

@@ -11,9 +11,11 @@ public class CuttingCounter : BaseCounter
         public float ProgressNormalized;
     }
 
+    public event EventHandler OnCut;
+
     [SerializeField] private CuttingRecipeSO[] _cuttingRecipeSOArray;
 
-    private int cuttingProgress;
+    private int _cuttingProgress;
 
 
     public override void Interact(Player player)
@@ -27,11 +29,11 @@ public class CuttingCounter : BaseCounter
                 {
                     //player carrying something to be cut
                     player.GetKitchenObject().SetKitchenObjectParent(this);
-                    cuttingProgress = 0;
+                    _cuttingProgress = 0;
                     CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
                     OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs()
                     {
-                        ProgressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax,
+                        ProgressNormalized = (float)_cuttingProgress / cuttingRecipeSO.cuttingProgressMax,
                     }); 
                 }
                 
@@ -62,16 +64,17 @@ public class CuttingCounter : BaseCounter
         {
 
             //there is kitchen object needed to cut and it can be cut
-            cuttingProgress++;
+            _cuttingProgress++;
+            OnCut?.Invoke(this, EventArgs.Empty);
 
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
 
             OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs()
             {
-                ProgressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax,
+                ProgressNormalized = (float)_cuttingProgress / cuttingRecipeSO.cuttingProgressMax,
             });
 
-            if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax)
+            if (_cuttingProgress >= cuttingRecipeSO.cuttingProgressMax)
             {
                 KitchenObjectSO outupKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
 
