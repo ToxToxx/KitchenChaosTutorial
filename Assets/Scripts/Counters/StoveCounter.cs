@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class StoveCounter : BaseCounter
+public class StoveCounter : BaseCounter, IHasProgress
 {
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler<OnStateChangedEventArgs> onStateChanged;
     public class OnStateChangedEventArgs : EventArgs
     {
@@ -44,6 +45,12 @@ public class StoveCounter : BaseCounter
                     break;
                 case State.Frying:
                     fryingTimer += Time.deltaTime;
+
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        ProgressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
+                    });
+
                     if (fryingTimer > fryingRecipeSO.fryingTimerMax)
                     {
                         //Fried
@@ -60,10 +67,18 @@ public class StoveCounter : BaseCounter
                         {
                             state = state
                         });
+
+                        
                     }
                     break;
                 case State.Fried:
                     burningTimer += Time.deltaTime;
+
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        ProgressNormalized = burningTimer / burningRecipeSO.burningTimerMax
+                    });
+
                     if (burningTimer > burningRecipeSO.burningTimerMax)
                     {
                         //Burned
@@ -77,6 +92,11 @@ public class StoveCounter : BaseCounter
                         onStateChanged?.Invoke(this, new OnStateChangedEventArgs
                         {
                             state = state
+                        });
+
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                        {
+                            ProgressNormalized = 0f
                         });
                     }
                     break;
@@ -108,6 +128,11 @@ public class StoveCounter : BaseCounter
                         state = state
                     });
 
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        ProgressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
+                    });
+
                 }
 
             }
@@ -133,6 +158,11 @@ public class StoveCounter : BaseCounter
                 onStateChanged?.Invoke(this, new OnStateChangedEventArgs
                 {
                     state = state
+                });
+
+                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                {
+                    ProgressNormalized = 0f
                 });
             }
         }
