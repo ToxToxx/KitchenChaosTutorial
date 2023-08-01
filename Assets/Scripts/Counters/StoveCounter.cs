@@ -14,10 +14,13 @@ public class StoveCounter : BaseCounter
     }
 
     [SerializeField] private FryingRecipeSO[] fryingRecipeSOArray;
+    [SerializeField] private BurningRecipeSO[] burningRecipeSOArray;
 
     private State state;
     private float fryingTimer;
+    private float burningTimer;
     private FryingRecipeSO fryingRecipeSO;
+    private BurningRecipeSO burningRecipeSO;
 
     private void Start()
     {
@@ -43,10 +46,26 @@ public class StoveCounter : BaseCounter
                         KitchenObject.SpawnKitchenObject(fryingRecipeSO.output, this);
 
                         Debug.Log("Object fried");
+
+                        
                         state = State.Fried;
+                        burningTimer = 0f;
+                        burningRecipeSO = GetBurningRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
                     }
                     break;
                 case State.Fried:
+                    burningTimer += Time.deltaTime;
+                    if (burningTimer > burningRecipeSO.burningTimerMax)
+                    {
+                        //Burned
+
+                        GetKitchenObject().DestroySelf();
+
+                        KitchenObject.SpawnKitchenObject(burningRecipeSO.output, this);
+
+                        Debug.Log("Object burned");
+                        state = State.Burned;
+                    }
                     break;
                 case State.Burned:
                     break;
@@ -121,6 +140,17 @@ public class StoveCounter : BaseCounter
             if (fryingRecipeSO.input == inputKitchenObjectSO)
             {
                 return fryingRecipeSO;
+            }
+        }
+        return null;
+    }
+    private BurningRecipeSO GetBurningRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        foreach (BurningRecipeSO burningRecipeSO in burningRecipeSOArray)
+        {
+            if (burningRecipeSO.input == inputKitchenObjectSO)
+            {
+                return burningRecipeSO;
             }
         }
         return null;
