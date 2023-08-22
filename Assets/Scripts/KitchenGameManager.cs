@@ -31,6 +31,16 @@ public class KitchenGameManager : MonoBehaviour
         _state = State.WaitingToStart;
     }
 
+    private void Start()
+    {
+        GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
+    }
+
+    private void GameInput_OnPauseAction(object sender, EventArgs e)
+    {
+        PauseGame();
+    }
+
     private void Update()
     {
         switch(_state)
@@ -89,5 +99,10 @@ public class KitchenGameManager : MonoBehaviour
     public float GetPlayingTimerNormalized()
     {
         return 1 - (_gamePlayingTimer / _gamePlayingTimerMax); // because other way it will be inverted
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0f;
     }
 }
