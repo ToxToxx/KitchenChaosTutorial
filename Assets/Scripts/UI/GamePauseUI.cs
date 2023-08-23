@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class GamePauseUI : MonoBehaviour
 
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private Button _resumeButton;
+    [SerializeField] private Button _optionsButton;
     
 
 
@@ -21,6 +23,10 @@ public class GamePauseUI : MonoBehaviour
         _mainMenuButton.onClick.AddListener(() =>
         {
             Loader.Load(Loader.Scene.MainMenuScene);
+        });
+        _optionsButton.onClick.AddListener(() =>
+        {
+            OptionsUI.Instance.Show();
         });
     }
 
