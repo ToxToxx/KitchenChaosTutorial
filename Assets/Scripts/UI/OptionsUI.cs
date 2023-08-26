@@ -51,10 +51,13 @@ public class OptionsUI : MonoBehaviour
             Hide();
         });
 
-        _moveUpButton.onClick.AddListener(() =>
-        {
-            RebindBinding(GameInput.Binding.Move_Up);
-        });
+        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Up); });
+        _moveDownButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Down); });
+        _moveLeftButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Left); });
+        _moveRightButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Right); });
+        _interactButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Interact); });
+        _interactAlternateButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.InteractAlternate); });
+        _pauseButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Pause); });
     }
 
     private void Start()
