@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,12 +29,12 @@ public class DeliveryResultUI : MonoBehaviour
         DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
         DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
 
-        gameObject.SetActive(false);
+        Hide();
     }
 
     private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
     {
-        gameObject.SetActive(true);
+        Show();
         _animator.SetTrigger(POPUP);
         _backgroundImage.color = _failedColor;
         _iconImage.sprite = _failedSprite;
@@ -42,10 +43,20 @@ public class DeliveryResultUI : MonoBehaviour
 
     private void DeliveryManager_OnRecipeSuccess(object sender, System.EventArgs e)
     {
-        gameObject.SetActive(true);
+        Show();
         _animator.SetTrigger(POPUP);
         _backgroundImage.color = _successColor;
         _iconImage.sprite = _successSprite;
         _messageText.text = "DELIVERY\nSUCCESS";
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
