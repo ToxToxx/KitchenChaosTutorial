@@ -392,6 +392,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5828167806161928120}
     m_Modifications:
+    - target: {fileID: 1931163065711197688, guid: 7894b0ee773102943adf68a184f34c96,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.95686066
+      objectReference: {fileID: 0}
+    - target: {fileID: 1931163065711197688, guid: 7894b0ee773102943adf68a184f34c96,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2900600362651884379, guid: 7894b0ee773102943adf68a184f34c96,
         type: 3}
       propertyPath: _hasProgressGameObject
