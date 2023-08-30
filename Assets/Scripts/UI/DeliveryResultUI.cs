@@ -27,10 +27,14 @@ public class DeliveryResultUI : MonoBehaviour
     {
         DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
         DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
+
+        gameObject.SetActive(false);
     }
 
     private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
     {
+        gameObject.SetActive(true);
+        _animator.SetTrigger(POPUP);
         _backgroundImage.color = _failedColor;
         _iconImage.sprite = _failedSprite;
         _messageText.text = "DELIVERY\nFAILED";
@@ -38,6 +42,8 @@ public class DeliveryResultUI : MonoBehaviour
 
     private void DeliveryManager_OnRecipeSuccess(object sender, System.EventArgs e)
     {
+        gameObject.SetActive(true);
+        _animator.SetTrigger(POPUP);
         _backgroundImage.color = _successColor;
         _iconImage.sprite = _successSprite;
         _messageText.text = "DELIVERY\nSUCCESS";
